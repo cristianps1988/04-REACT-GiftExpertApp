@@ -1,22 +1,12 @@
-import { getGifts } from "../helpers/getGifts"
-import { useEffect, useState } from "react"
-import GiftItem from "./GiftItem"
+import { GiftItem } from './'
+import useFetchGifts from "../hooks/useFetchGifts"
 
-const GiftGrid = ({ category }) => {
-    const [imagenes, setImagenes] = useState([])
-
-    const getImages = async () => {
-        const newImages = await getGifts(category)
-        setImagenes(newImages)
-    }
-
-    useEffect(() => {
-        getImages()
-    }, [])
-
+export const GiftGrid = ({ category }) => {
+    const { imagenes, isLoading } = useFetchGifts(category)
     return (
         <div>
             <h3>{category}</h3>
+            {isLoading && <h2>Cargando</h2>}
             <div className="card-grid">
                 {imagenes.map((imagen) => (
                     <GiftItem key={imagen.id} {...imagen} />
@@ -27,4 +17,3 @@ const GiftGrid = ({ category }) => {
     )
 }
 
-export default GiftGrid
